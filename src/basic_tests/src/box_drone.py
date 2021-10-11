@@ -6,8 +6,17 @@ import tempfile
 import pprint
 import cv2
 
+import sys
+
+# read AirSim simulator IP from commandline
+if len(sys.argv) > 1:
+    airsim_ip = sys.argv[1]
+    print("Will connect to {}".format(airsim_ip))
+else:
+    airsim_ip = ""
+
 # connect to the AirSim simulator
-client = airsim.MultirotorClient()
+client = airsim.MultirotorClient(ip=airsim_ip)
 client.confirmConnection()
 client.enableApiControl(True)
 
