@@ -4,7 +4,7 @@ import numpy as np
 import os
 import tempfile
 import pprint
-import cv2
+#import cv2
 
 import sys
 
