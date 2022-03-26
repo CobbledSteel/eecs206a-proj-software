@@ -1,0 +1,8 @@
+<launch>
+    <!-- vim: set ft=xml noet : -->
+    <!-- example launch script for ArduPilot based FCU's -->
+
+    <include file="$(find mavros)/launch/apm.launch">
+    </include>
+</launch>
+
