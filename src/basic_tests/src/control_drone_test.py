@@ -1,12 +1,12 @@
 import airsim
-
 import numpy as np
 import os
 import tempfile
 import pprint
 #import cv2
-
 import sys
+import control_drone
+control = control_drone.RotateToYawApi()
 
 # read AirSim simulator IP from commandline
 if len(sys.argv) > 1:
@@ -21,10 +21,7 @@ client.confirmConnection()
 client.enableApiControl(True)
 
 state = client.getMultirotorState()
-print("state")
-# print(state.kinematics_estimated.orientation)
 
-print(client.simGetGroundTruthKinematics())
 
 imu_data = client.getImuData()
 
@@ -39,16 +36,17 @@ client.armDisarm(True)
 client.takeoffAsync().join()
 
 while True:
-    client.moveToPositionAsync(-10, 10, -10, 5).join()
-    client.hoverAsync().join()
+	control.rotateToYaw(client, 90)
+	client.hoverAsync().join()
 
-    client.moveToPositionAsync(-10, -10, -10, 5, drivetrain=airsim.DrivetrainType.ForwardOnly).join()
-    client.hoverAsync().join()
+	control.rotateToYaw(client, 90)
+	client.hoverAsync().join()
 
-    client.moveToPositionAsync(10, -10, -10, 5).join()
-    client.hoverAsync().join()
+	control.rotateToYaw(client, 90)
+	client.hoverAsync().join()
 
-    client.moveToPositionAsync(10, 10, -10, 5).join()
-    client.hoverAsync().join()
+	control.rotateToYaw(client, 90)
+	client.hoverAsync().join()
 
 state = client.getMultirotorState()
+

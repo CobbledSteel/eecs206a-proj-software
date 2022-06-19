@@ -39,16 +39,7 @@ client.armDisarm(True)
 client.takeoffAsync().join()
 
 while True:
-    client.moveToPositionAsync(-10, 10, -10, 5).join()
-    client.hoverAsync().join()
+    client.moveByVelocityAsync(-5, -5, 0, duration=1, drivetrain = airsim.DrivetrainType.ForwardOnly, yaw_mode=airsim.YawMode(False, 0)).join()
 
-    client.moveToPositionAsync(-10, -10, -10, 5, drivetrain=airsim.DrivetrainType.ForwardOnly).join()
-    client.hoverAsync().join()
-
-    client.moveToPositionAsync(10, -10, -10, 5).join()
-    client.hoverAsync().join()
-
-    client.moveToPositionAsync(10, 10, -10, 5).join()
-    client.hoverAsync().join()
-
+    client.moveByVelocityAsync(-5, 5, 0, duration=1, drivetrain = airsim.DrivetrainType.ForwardOnly, yaw_mode=airsim.YawMode(False, 0)).join()
 state = client.getMultirotorState()

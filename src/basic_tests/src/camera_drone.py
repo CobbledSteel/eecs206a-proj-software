@@ -4,7 +4,7 @@ import numpy as np
 import os
 import tempfile
 import pprint
-#import cv2
+import cv2
 
 import sys
 
@@ -21,10 +21,6 @@ client.confirmConnection()
 client.enableApiControl(True)
 
 state = client.getMultirotorState()
-print("state")
-# print(state.kinematics_estimated.orientation)
-
-print(client.simGetGroundTruthKinematics())
 
 imu_data = client.getImuData()
 
@@ -39,10 +35,20 @@ client.armDisarm(True)
 client.takeoffAsync().join()
 
 while True:
+    rawImage = client.simGetImage("0", airsim.ImageType.Scene)
+    if (rawImage == None):
+        print("Camera is not returning image, please check airsim for error messages")
+        sys.exit(0)
+    else:
+        png = cv2.imdecode(airsim.string_to_uint8_array(rawImage), cv2.IMREAD_UNCHANGED)
+        cv2.imshow("Depth", png)
+        if cv2.waitKey(1) == 27:
+          break
+
     client.moveToPositionAsync(-10, 10, -10, 5).join()
     client.hoverAsync().join()
 
-    client.moveToPositionAsync(-10, -10, -10, 5, drivetrain=airsim.DrivetrainType.ForwardOnly).join()
+    client.moveToPositionAsync(-10, -10, -10, 5).join()
     client.hoverAsync().join()
 
     client.moveToPositionAsync(10, -10, -10, 5).join()
