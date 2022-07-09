@@ -6,6 +6,8 @@ import tempfile
 import pprint
 #import cv2
 
+import control_drone
+
 import sys
 
 # read AirSim simulator IP from commandline
@@ -38,8 +40,18 @@ print("Taking off...")
 client.armDisarm(True)
 client.takeoffAsync().join()
 
-while True:
-    client.moveByVelocityAsync(-5, -5, 0, duration=1, drivetrain = airsim.DrivetrainType.ForwardOnly, yaw_mode=airsim.YawMode(False, 0)).join()
+control = control_drone.IntermediateDroneApi()
 
-    client.moveByVelocityAsync(-5, 5, 0, duration=1, drivetrain = airsim.DrivetrainType.ForwardOnly, yaw_mode=airsim.YawMode(False, 0)).join()
+control.launchStabilizer(client)
+
+while True:
+    pass
+    #client.moveByVelocityAsync(-5, -5, 0, duration=1, drivetrain = airsim.DrivetrainType.ForwardOnly, yaw_mode=airsim.YawMode(False, 0)).join()
+
+    #client.moveByVelocityAsync(-5, 5, 0, duration=1, drivetrain = airsim.DrivetrainType.ForwardOnly, yaw_mode=airsim.YawMode(False, 0)).join()
+    #client.moveByRollPitchYawrateThrottleAsync(0,0.01,0,0.6,1) while True:
+    rawImage = client.simGetImage("0", airsim.ImageType.Scene)
+    byte_arr = airsim.string_to_uint8_array(rawImage).tobytes()
+    print(type(byte_arr))
+    print(byte_arr)
 state = client.getMultirotorState()
