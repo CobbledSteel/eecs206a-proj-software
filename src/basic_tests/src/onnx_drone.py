@@ -81,6 +81,20 @@ def run_dronet(ort_sess, img):
     print("cmd: {}".format(cmd))
     return cmd
 
+def run_customnet(ort_sess, img):
+    img_BGR = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+    im_f = img_BGR.astype(np.float32)
+    im_f = np.expand_dims(im_f,axis=0)
+    im_f = im_f.transpose(0, 3,1,2) 
+
+    outputs = ort_sess.run(None, {'input': im_f})
+    vals = outputs[0][0]
+
+    print("outputs: {}".format(outputs[0][0]))
+    cv2.imwrite('lined.png', img_BGR)
+    return vals
+
+
 
 def run_trailnet(ort_sess, img):
     img_BGR = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
